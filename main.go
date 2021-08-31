@@ -53,11 +53,11 @@ func getRecourds(pageUrl string) {
 		if index < 0 {
 			break
 		}
-		musicURLList[i] = "<a href=\"" + mainPageString[index-17:index+4] + "\">Visit W3Schools.com!</a>"
+		musicURLList[i] = "<a href=\"https://www.alqasidah.com/" + mainPageString[index-17:index+4] + "\">music.mp3</a>\n"
 		mainPageString = mainPageString[index+4:]
 	}
 	fmt.Println("--the audio urls: ", musicURLList)
-	str += strings.Join(musicURLList, "\n")
+	str += strings.Join(musicURLList, "")
 }
 func getPort() string {
 
