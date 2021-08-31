@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -51,7 +50,7 @@ func handel(w http.ResponseWriter, r *http.Request) {
 		for _, recordUrl := range musicURLList {
 			response := get("https://www.alqasidah.com/audio/" + recordUrl)
 			defer response.Body.Close()
-			byttte, err := io.ReadAll(response.Body)
+			byttte, err := ioutil.ReadAll(response.Body)
 			errorCheck(&err)
 			w.Write(byttte)
 		}
