@@ -35,7 +35,7 @@ func handel(w http.ResponseWriter, r *http.Request) {
 	for _, pageUrl := range titleList {
 		go getRecourds(pageUrl)
 	}
-	time.Sleep(time.Second * 5)
+	time.Sleep(time.Second * 10)
 	w.Write([]byte(str))
 }
 
