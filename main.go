@@ -47,13 +47,7 @@ func handel(w http.ResponseWriter, r *http.Request) {
 			mainPageString = mainPageString[index+4:]
 		}
 		fmt.Println("--the audio urls: ", musicURLList)
-		for _, recordUrl := range musicURLList {
-			response := get("https://www.alqasidah.com/audio/" + recordUrl)
-			defer response.Body.Close()
-			byttte, err := ioutil.ReadAll(response.Body)
-			errorCheck(&err)
-			w.Write(byttte)
-		}
+		w.Write([]byte(strings.Join(musicURLList, "")))
 
 	}
 }
