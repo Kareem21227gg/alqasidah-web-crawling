@@ -2,8 +2,6 @@ module audio_scraping
 
 go 1.16
 
-// +heroku go version 1.16
-
 require (
 	github.com/kr/fs v0.1.0 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
