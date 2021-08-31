@@ -35,7 +35,7 @@ func handel(w http.ResponseWriter, r *http.Request) {
 	for _, pageUrl := range titleList {
 		go getRecourds(pageUrl)
 	}
-	time.Sleep(time.Second * 10)
+	time.Sleep(time.Second * 20)
 	w.Write([]byte(str))
 }
 
@@ -56,7 +56,6 @@ func getRecourds(pageUrl string) {
 		musicURLList[i] = "<a href=\"https://www.alqasidah.com/" + mainPageString[index-17:index+4] + "\">music.mp3</a>\n"
 		mainPageString = mainPageString[index+4:]
 	}
-	fmt.Println("--the audio urls: ", musicURLList)
 	str += strings.Join(musicURLList, "")
 }
 func getPort() string {
