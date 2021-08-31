@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+var str string
+
 func handel(w http.ResponseWriter, r *http.Request) {
 	response := get("https://www.alqasidah.com/poet.php?poet=darwish")
 	defer response.Body.Close()
@@ -39,8 +41,6 @@ func handel(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(str))
 }
 
-var str string
-
 func getRecourds(pageUrl string) {
 	response := get("https://www.alqasidah.com/" + pageUrl)
 	defer response.Body.Close()
@@ -67,6 +67,7 @@ func getPort() string {
 	return port
 }
 func main() {
+	str = ""
 	http.HandleFunc("/", handel)
 	http.ListenAndServe(":"+getPort(), nil)
 
