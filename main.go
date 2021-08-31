@@ -43,11 +43,11 @@ func handel(w http.ResponseWriter, r *http.Request) {
 			if index < 0 {
 				break
 			}
-			musicURLList[i] = mainPageString[index-25+8 : index+4]
+			musicURLList[i] = mainPageString[index-17 : index+4]
 			mainPageString = mainPageString[index+4:]
 		}
 		fmt.Println("--the audio urls: ", musicURLList)
-		w.Write([]byte(strings.Join(musicURLList, "")))
+		w.Write([]byte(strings.Join(musicURLList, "\n")))
 
 	}
 }
