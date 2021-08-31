@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 )
 
 func handel(w http.ResponseWriter, r *http.Request) {
@@ -32,10 +33,15 @@ func handel(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println("the urls list: ", titleList)
 	for _, pageUrl := range titleList {
-		go getRecourds(pageUrl, w)
+		go getRecourds(pageUrl)
 	}
+	time.Sleep(time.Second * 5)
+	w.Write([]byte(str))
 }
-func getRecourds(pageUrl string, w http.ResponseWriter) {
+
+var str string
+
+func getRecourds(pageUrl string) {
 	response := get("https://www.alqasidah.com/" + pageUrl)
 	defer response.Body.Close()
 	mainPageByte, err := ioutil.ReadAll(response.Body)
@@ -47,12 +53,11 @@ func getRecourds(pageUrl string, w http.ResponseWriter) {
 		if index < 0 {
 			break
 		}
-		musicURLList[i] = mainPageString[index-17 : index+4]
+		musicURLList[i] = "<a href=\"" + mainPageString[index-17:index+4] + "\">Visit W3Schools.com!</a>"
 		mainPageString = mainPageString[index+4:]
 	}
 	fmt.Println("--the audio urls: ", musicURLList)
-	w.Write([]byte(strings.Join(musicURLList, "\n")))
-
+	str += strings.Join(musicURLList, "\n")
 }
 func getPort() string {
 
