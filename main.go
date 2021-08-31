@@ -31,7 +31,7 @@ func handel(w http.ResponseWriter, r *http.Request) {
 		titleList[i] = title[index+6 : index+22]
 
 	}
-	fmt.Println("the urls list: ", titleList)
+	fmt.Println("the urls list len: ", len(titleList))
 	for _, pageUrl := range titleList {
 		go getRecourds(pageUrl)
 	}
