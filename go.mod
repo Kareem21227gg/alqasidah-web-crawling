@@ -1,3 +1,3 @@
 module audio_scraping
 go 1.16
-require ()
+// +heroku install ./cmd/1.16
