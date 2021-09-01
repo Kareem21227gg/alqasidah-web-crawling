@@ -2,10 +2,14 @@ package main
 
 import (
 	"fmt"
+	"io/fs"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strings"
 	"time"
+
+	"github.com/dhowden/tag"
 )
 
 func getRecourds(pageUrl string) {
@@ -14,19 +18,26 @@ func getRecourds(pageUrl string) {
 	mainPageByte, err := ioutil.ReadAll(response.Body)
 	errorCheck(&err)
 	mainPageString := string(mainPageByte)
-	name := "//"
+	name := "blh.mp3"
 	for {
 		index := strings.Index(mainPageString, ".mp3")
 		if index < 0 {
 			break
 		}
 		music := "https://www.alqasidah.com/" + mainPageString[index-17:index+4]
-
+		file, err := os.Create(".\\records\\" + name)
+		errorCheck(&err)
+		response := get(music)
+		defer response.Body.Close()
+		mainPageByte, err = ioutil.ReadAll(response.Body)
+		errorCheck(&err)
+		file.Write(mainPageByte)
+		tag.ReadFrom(file)
 		mainPageString = mainPageString[index+4:]
 	}
-	strings.Join(musicURLList, "")
 }
 func main() {
+	os.Mkdir("records", fs.ModeDir)
 	response := get("https://www.alqasidah.com/poet.php?poet=darwish")
 	defer response.Body.Close()
 	mainPageByte, err := ioutil.ReadAll(response.Body)
