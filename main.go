@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io/fs"
 	"io/ioutil"
@@ -17,15 +18,20 @@ func getRecourds(pageUrl string) {
 	mainPageString := string(mainPageByte)
 	//<u><b class='poemname'>هي لا تحبك أنت </b></u>
 	name := mainPageString[strings.Index(mainPageString, "<u><b class='poemname'>")+23 : strings.Index(mainPageString, "</b></u>")-1]
-	fmt.Printf("getting recourd: %v\n", name)
 	counter := ""
 	for {
+
 		index := strings.Index(mainPageString, ".mp3")
 		if index < 0 {
 			break
 		}
+		fmt.Printf("getting recourd: %v\n", name+counter)
 		music := "https://www.alqasidah.com/" + mainPageString[index-17:index+4]
-		file, err := os.Create(".\\records\\" + name + counter + ".mp3")
+		filename := name + counter
+		if len(filename) > 27 {
+			filename = name[:26] + counter
+		}
+		file, err := os.Create(".\\records\\" + filename + ".mp3")
 		errorCheck(&err)
 		response := get(music)
 		defer response.Body.Close()
@@ -60,7 +66,10 @@ func main() {
 	for _, pageUrl := range titleList {
 		getRecourds(pageUrl)
 	}
-
+	fmt.Print("developed by ")
+	fmt.Print(string("\033[32m"), "https://github.com/Kareem21227gg")
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
 }
 func errorCheck(err *error) {
 	if *err != nil {
