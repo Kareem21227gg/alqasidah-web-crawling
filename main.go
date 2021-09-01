@@ -7,9 +7,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-	"time"
-
-	"github.com/dhowden/tag"
 )
 
 func getRecourds(pageUrl string) {
@@ -18,23 +15,27 @@ func getRecourds(pageUrl string) {
 	mainPageByte, err := ioutil.ReadAll(response.Body)
 	errorCheck(&err)
 	mainPageString := string(mainPageByte)
-	name := "blh.mp3"
+	//<u><b class='poemname'>هي لا تحبك أنت </b></u>
+	name := mainPageString[strings.Index(mainPageString, "<u><b class='poemname'>")+23 : strings.Index(mainPageString, "</b></u>")-1]
+	fmt.Printf("getting recourd: %v\n", name)
+	counter := ""
 	for {
 		index := strings.Index(mainPageString, ".mp3")
 		if index < 0 {
 			break
 		}
 		music := "https://www.alqasidah.com/" + mainPageString[index-17:index+4]
-		file, err := os.Create(".\\records\\" + name)
+		file, err := os.Create(".\\records\\" + name + counter + ".mp3")
 		errorCheck(&err)
 		response := get(music)
 		defer response.Body.Close()
 		mainPageByte, err = ioutil.ReadAll(response.Body)
 		errorCheck(&err)
 		file.Write(mainPageByte)
-		tag.ReadFrom(file)
 		mainPageString = mainPageString[index+4:]
+		counter += "1"
 	}
+
 }
 func main() {
 	os.Mkdir("records", fs.ModeDir)
@@ -68,8 +69,6 @@ func errorCheck(err *error) {
 }
 
 func get(url string) *http.Response {
-	//this is importanat to avoid http error 403
-	time.Sleep(time.Second / 2)
 	request, err := http.NewRequest("GET", url, nil)
 	errorCheck(&err)
 	request.Header.Add("Host", "alqasidah.com")
